@@ -1,7 +1,7 @@
-var request = require('request');
-var benchrest = require('bench-rest');
-var grunt = require("grunt");
-var Q = require('q');
+const request = require('request');
+const benchrest = require('bench-rest');
+const grunt = require("grunt");
+const Q = require('q');
 
 
 // INFO ABOUT THE STATS
@@ -10,31 +10,31 @@ var Q = require('q');
 // stats.main.histogram.mean - the average time any iteration took (milliseconds)
 // stats.main.histogram.p95 - the amount of time that 95% of all iterations completed within (milliseconds)
 
-var options = {
+const options = {
   limit: 10,     // concurrent connections
   iterations: 10000  // number of iterations to perform
 };
-var test = {
+const test = {
   domain : 'http://localhost:9000',
   dir : './reports/server/perf/',
   route : '/api/todos/',
   nfr : 60
 };
-var si = {
+const si = {
   domain : 'http://localhost:9002',
   dir : './reports/server/perf/',
   route : '/api/todos/',
   nfr : 60
 };
-var production = {
+const production = {
   domain : 'http://localhost:80',
   dir : './reports/server/perf/',
   route : '/api/todos/',
   nfr : 50
 };
 
-var test_endpoint = function (flow, options) {
-  var wait = Q.defer();
+const test_endpoint = function (flow, options) {
+  const wait = Q.defer();
 
   benchrest(flow, options)
     .on('error', function (err, ctxName) {
@@ -44,9 +44,9 @@ var test_endpoint = function (flow, options) {
       console.log('\n\n###### ' +flow.filename +' - ' +flow.env.domain + flow.env.route);
       console.log('Error Count', errorCount);
       console.log('Stats', stats);
-      var mean_score = stats.main.histogram.mean;
-      var fs = require('fs-extra');
-      var file = flow.env.dir + flow.filename + '-perf-score.csv';
+      const mean_score = stats.main.histogram.mean;
+      const fs = require('fs-extra');
+      const file = flow.env.dir + flow.filename + '-perf-score.csv';
       fs.outputFileSync(file, 'mean,max,mix,p95\n'+  stats.main.histogram.mean +','
         + stats.main.histogram.max +','+ stats.main.histogram.min +','+ stats.main.histogram.p95);
       if (mean_score > flow.env.nfr){
@@ -65,8 +65,8 @@ module.exports = function () {
     if (target === undefined || api === undefined){
       grunt.fail.fatal('Required param not set - use grunt perf-test\:\<target\>\:\<api\>');
     } else {
-      var done = this.async();
-      var create = {
+      const done = this.async();
+      const create = {
         filename: 'create',
         env: {},
         main: [{
@@ -78,7 +78,7 @@ module.exports = function () {
         }]
       };
 
-      var show = {
+      const show = {
         filename: 'show',
         env: {},
         main: [{
@@ -105,7 +105,7 @@ module.exports = function () {
       grunt.log.ok("Perf tests running against " + target);
       grunt.log.ok("This may take some time .... ");
 
-      var all_tests = [];
+      const all_tests = [];
 
       // console.log(create)
       // console.log(show)
@@ -117,7 +117,7 @@ module.exports = function () {
             all_tests.push(test_endpoint(create, options));
           }
           else {
-            var mongoid = JSON.parse(body)[0]._id;
+            const mongoid = JSON.parse(body)[0]._id;
             show.main[0].get = si.domain + si.route + mongoid;
             all_tests.push(test_endpoint(show, options));
           }

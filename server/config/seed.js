@@ -5,7 +5,7 @@
 
 'use strict';
 
-var Todo = require('../api/todo/todo.model');
+const Todo = require('../api/todo/todo.model');
 
 Todo.find({}).remove(function() {
   Todo.create({

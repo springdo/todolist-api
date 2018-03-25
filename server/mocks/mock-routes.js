@@ -4,9 +4,9 @@
 
 'use strict';
 
-var express = require('express');
+const express = require('express');
 
-var routerStub = express.Router();
+const routerStub = express.Router();
 
 function mockMongoId() {
   function s4() {
@@ -29,7 +29,7 @@ routerStub.get('/todos', function (req, res) {
 
 routerStub.get('/todos/:id', function (req, res) {
   setTimeout(function () {
-    var id = req.params.id;
+    const id = req.params.id;
     return res.status(200).send({
       "title": "Learn some stuff about Jenkins", "_id": id, "completed": true
     });

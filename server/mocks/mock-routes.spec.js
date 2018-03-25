@@ -1,7 +1,7 @@
 'use strict';
 
-var app = require('../app');
-var request = require('supertest');
+const app = require('../app');
+const request = require('supertest');
 require('should');
 
 describe('GET /api/todos', function() {
@@ -38,7 +38,7 @@ describe('POST /api/todos', function() {
 });
 
 describe('GET /api/todos/:id', function() {
-  var todoId;
+  const todoId;
   beforeEach(function createObjectToUpdate(done) {
     request(app)
       .post('/api/todos')
@@ -86,7 +86,7 @@ describe('GET /api/todos/:id', function() {
 });
 
 describe('PUT /api/todos/:id', function() {
-  var todoId;
+  const todoId;
   beforeEach(function createObjectToUpdate(done){
     request(app)
       .post('/api/todos')
@@ -137,7 +137,7 @@ describe('PUT /api/todos/:id', function() {
 });
 
 describe('DELETE /api/todos/:id', function() {
-  var todoId;
+  const todoId;
   beforeEach(function createObjectToUpdate(done){
     request(app)
       .post('/api/todos')

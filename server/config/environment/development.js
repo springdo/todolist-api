@@ -8,7 +8,9 @@ module.exports = {
     uri: 'mongodb://mongo.server/todolist-dev'
   },
   mocks: {
-    api: true
+    // enable this for non mock api
+    // api: true
+    api: false
   },
   seedDB: true
 };

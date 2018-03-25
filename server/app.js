@@ -7,8 +7,8 @@
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var express = require('express');
-var config = require('./config/environment');
+const express = require('express');
+const config = require('./config/environment');
 
 
 
@@ -16,15 +16,15 @@ var config = require('./config/environment');
 if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
-var app = express();
-var server = require('http').createServer(app);
+const app = express();
+const server = require('http').createServer(app);
 require('./config/express')(app);
 
 if (config.mocks && config.mocks.api) {
   //add stubs
   require('./mocks/mock-routes')(app);
 } else {
-  var mongoose = require('mongoose');
+  const mongoose = require('mongoose');
   // Connect to database
   mongoose.connect(config.mongo.uri, config.mongo.options);
   mongoose.connection.on('error', function(err) {

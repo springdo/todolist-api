@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = function (grunt) {
-  var localConfig;
+  let localConfig;
   try {
     localConfig = require('./server/config/local.env');
   } catch(e) {
@@ -100,19 +100,9 @@ module.exports = function (grunt) {
     // Empties folders to start fresh
     clean: {
       server: '.tmp',
-      karmareports: 'reports/client/karma/**',
       mochareports: 'reports/server/mocha/**',
-      lint: 'reports/{server,client}/jshint/**',
-      coverage: 'reports/{server,client}/coverage/**'
-    },
-
-    // Debugging with node inspector
-    'node-inspector': {
-      custom: {
-        options: {
-          'web-host': 'localhost'
-        }
-      }
+      lint: 'reports/{server}/jshint/**',
+      coverage: 'reports/{server}/coverage/**'
     },
 
     // Use nodemon to run server in debug mode with an initial breakpoint
@@ -149,7 +139,6 @@ module.exports = function (grunt) {
       debug: {
         tasks: [
           'nodemon',
-          'node-inspector'
         ],
         options: {
           logConcurrentOutput: true
@@ -231,7 +220,7 @@ module.exports = function (grunt) {
   grunt.registerTask('wait', function () {
     grunt.log.ok('Waiting for server reload...');
 
-    var done = this.async();
+    const done = this.async();
 
     setTimeout(function () {
       grunt.log.writeln('Done waiting!');
@@ -244,12 +233,12 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-image', 'Build the image', function(imageId) {
-    var shell = require("shelljs");
+    const shell = require("shelljs");
     grunt.log.ok('BUILDING IMAGE');
     if (!imageId) {
       grunt.fail.warn('must supply an imageId to build');
     }
-    var rc = shell.exec('docker build -t todolist:' + imageId + ' -f ./dist/Dockerfile ./dist').code;
+    const rc = shell.exec('docker build -t todolist:' + imageId + ' -f ./dist/Dockerfile ./dist').code;
     if (rc > 0){
       grunt.fail.warn("DOCKER FAILURE")
     }
@@ -257,7 +246,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy', 'deploy the node js app to a docker container and start it in the correct mode', function(target_env, build_tag) {
     grunt.log.ok('this task must run on a host that has the Docker Daemon running on it');
-    var ports = {
+    const ports = {
       ci: '9001',
       si: '9002',
       production: '80'
@@ -266,24 +255,24 @@ module.exports = function (grunt) {
     if (target_env === undefined || build_tag === undefined){
       grunt.fail.warn('Required param not set - use grunt deploy\:\<target\>\:\<tag\>');
     } else {
-      var shell = require("shelljs");
+      const shell = require("shelljs");
       grunt.log.ok('STOPPING AND REMOVING EXISTING CONTAINERS');
       shell.exec('docker stop todolist-'+ target_env + ' && docker rm todolist-'+ target_env);
 
       grunt.log.ok('DEPLOYING ' + target_env + ' CONTAINER');
       if (target_env === 'ci'){
-        var rc = shell.exec('docker run -t -d --name todolist-' + target_env + ' -p ' + ports[target_env]+ ':'+ports[target_env]+' --env NODE_ENV=' + target_env + ' todolist:' + build_tag);
+        const rc = shell.exec('docker run -t -d --name todolist-' + target_env + ' -p ' + ports[target_env]+ ':'+ports[target_env]+' --env NODE_ENV=' + target_env + ' todolist:' + build_tag);
         if (rc > 0){
           grunt.fail.warn("DOCKER FAILURE")
         }
       } else {
         // ensure mongo is up
-        var isMongo = shell.exec('docker ps | grep devops-mongo').code;
+        const isMongo = shell.exec('docker ps | grep devops-mongo').code;
         if (isMongo > 0){
           grunt.log.ok('DEPLOYING Mongodb CONTAINER FIRST');
           shell.exec('docker run --name devops-mongo -p 27017:27017 -d mongo');
         }
-        var rc = shell.exec('docker run -t -d --name todolist-' + target_env + ' --link devops-mongo:mongo.server -p '
+        const rc = shell.exec('docker run -t -d --name todolist-' + target_env + ' --link devops-mongo:mongo.server -p '
             + ports[target_env]+ ':' + ports[target_env] + ' --env NODE_ENV=' + target_env + ' todolist:' + build_tag).code;
         if (rc > 0){
           grunt.fail.warn("DOCKER FAILURE");
@@ -295,7 +284,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
+      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'express-keepalive']);
     }
 
     if (target === 'debug') {
@@ -313,20 +302,19 @@ module.exports = function (grunt) {
       'env:' + (target || 'dev'),
       'express:dev',
       'wait',
-      'open',
-      'watch'
+      'express-keepalive'
     ]);
   });
 
   grunt.registerTask('test', function(target, environ) {
     environ = environ !== undefined ? environ : 'test';
-    var usePhantom = false;
+    const usePhantom = false;
     if (environ === 'phantom') {
       environ = 'test';
       usePhantom = true;
     }
-    var reporter = 'terminal';
-    var coverage = 'travis';
+    const reporter = 'terminal';
+    const coverage = 'travis';
     if (target === 'server-jenkins') {
       target = 'server';
       reporter = 'junit';

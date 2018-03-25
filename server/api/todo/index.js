@@ -1,10 +1,10 @@
 'use strict';
 
-var express = require('express');
+const express = require('express');
 
-var router = express.Router();
+const router = express.Router();
 
-var controller = require('./todo.controller');
+const controller = require('./todo.controller');
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);

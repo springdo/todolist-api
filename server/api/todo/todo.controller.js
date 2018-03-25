@@ -1,11 +1,11 @@
 'use strict';
 
-var _ = require('lodash');
-var Todo = require('./todo.model');
+const _ = require('lodash');
+const Todo = require('./todo.model');
 
 // Get list of todos
 exports.index = function(req, res) {
-  var biscuits;
+  let biscuits;
   Todo.find(function (err, todos) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(todos);
@@ -37,7 +37,7 @@ exports.update = function(req, res) {
   Todo.findById(req.params.id.toString(), function (err, todo) {
     if (err) { return handleError(res, err); }
     if(!todo) { return res.status(404).send('Not Found'); }
-    var updated = _.merge(todo, req.body);
+    const updated = _.merge(todo, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.status(200).json(todo);
