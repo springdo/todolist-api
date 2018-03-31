@@ -21,7 +21,7 @@ const server = require('http').createServer(app);
 require('./config/express')(app);
 
 if (config.mocks && config.mocks.api) {
-  //add stubs
+  //add stubs if needed
   require('./mocks/mock-routes')(app);
 } else {
   const mongoose = require('mongoose');

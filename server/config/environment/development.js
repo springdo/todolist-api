@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://mongo.server/todolist-dev'
+    uri: 'mongodb://localhost/todolist-dev'
   },
   mocks: {
     // enable this for non mock api

@@ -8,3 +8,6 @@ dist
 npm-debug.log
 reports
 *.log
+coverage
+.nyc_output
+test-results.xml

@@ -72,18 +72,6 @@ module.exports = function (grunt) {
           'server/**/*.spec.js'
         ]
       },
-      bm_client: {
-        options: {
-          jshintrc: 'client/.jshintrc',
-          reporter: require('jshint-junit-reporter'),
-          reporterOutput: 'reports/client/linting/jshint-junit-client.xml'
-        },
-        src: [
-          '<%= yeoman.client %>/app/**/*.js',
-          '<%= yeoman.client %>/app/**/*.spec.js',
-          '<%= yeoman.client %>/app/**/*.mock.js'
-        ]
-      },
       bm_server: {
         options: {
           jshintrc: 'server/.jshintrc',
@@ -101,8 +89,8 @@ module.exports = function (grunt) {
     clean: {
       server: '.tmp',
       mochareports: 'reports/server/mocha/**',
-      lint: 'reports/{server}/jshint/**',
-      coverage: 'reports/{server}/coverage/**'
+      lint: 'reports/{server}/linting/**',
+      coverage: 'reports/coverage/**'
     },
 
     // Use nodemon to run server in debug mode with an initial breakpoint
@@ -308,11 +296,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', function(target, environ) {
     environ = environ !== undefined ? environ : 'test';
-    const usePhantom = false;
-    if (environ === 'phantom') {
-      environ = 'test';
-      usePhantom = true;
-    }
     const reporter = 'terminal';
     const coverage = 'travis';
     if (target === 'server-jenkins') {
@@ -339,8 +322,10 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean:dist',
+    'clean',
     'concurrent:dist',
+    'newer:jshint',
+    'test',
   ]);
 
   grunt.registerTask('default', [

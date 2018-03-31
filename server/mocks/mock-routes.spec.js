@@ -38,7 +38,7 @@ describe('POST /api/todos', function() {
 });
 
 describe('GET /api/todos/:id', function() {
-  const todoId;
+  let todoId;
   beforeEach(function createObjectToUpdate(done) {
     request(app)
       .post('/api/todos')
@@ -86,7 +86,7 @@ describe('GET /api/todos/:id', function() {
 });
 
 describe('PUT /api/todos/:id', function() {
-  const todoId;
+  let todoId;
   beforeEach(function createObjectToUpdate(done){
     request(app)
       .post('/api/todos')
@@ -137,7 +137,7 @@ describe('PUT /api/todos/:id', function() {
 });
 
 describe('DELETE /api/todos/:id', function() {
-  const todoId;
+  let todoId;
   beforeEach(function createObjectToUpdate(done){
     request(app)
       .post('/api/todos')
