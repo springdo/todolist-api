@@ -72,17 +72,17 @@ module.exports = function (grunt) {
           'server/**/*.spec.js'
         ]
       },
-      bm_server: {
-        options: {
-          jshintrc: 'server/.jshintrc',
-          reporter: require('jshint-junit-reporter'),
-          reporterOutput: 'reports/server/linting/jshint-junit-server.xml'
-        },
-        src: [
-          'server/**/*.js',
-          'server/**/*.spec.js'
-        ]
-      }
+      // bm_server: {
+      //   options: {
+      //     jshintrc: 'server/.jshintrc',
+      //     reporter: require('jshint-junit-reporter'),
+      //     reporterOutput: 'reports/server/linting/jshint-junit-server.xml'
+      //   },
+      //   src: [
+      //     'server/**/*.js',
+      //     'server/**/*.spec.js'
+      //   ]
+      // }
     },
 
     // Empties folders to start fresh
