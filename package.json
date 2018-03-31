@@ -70,7 +70,11 @@
     "clean": "./node_modules/.bin/grunt clean",
     "build": "./node_modules/.bin/grunt build",
     "test": "node_modules/.bin/nyc node_modules/.bin/mocha server/**/*.spec.js --exit",
-    "test:ci": "export MOCHA_FILE='reports/server/mocha/test-results.xml' && node_modules/.bin/nyc node_modules/.bin/mocha server/**/*.spec.js -R mocha-junit-reporter --exit"
+    "test:ci": "export MOCHA_FILE='reports/server/mocha/test-results.xml' && export NODE_ENV=ci && node_modules/.bin/nyc node_modules/.bin/mocha server/**/*.spec.js -R mocha-junit-reporter --exit",
+    "mongo" : "docker run -i -d --name mongo-local -p 27017:27017 mongo",
+    "mongo:drop" : "npm run mongo:stop && docker rm mongo-local",
+    "mongo:stop" : "docker stop mongo-local",
+    "mongo:start" : "docker start mongo-local"
   },
   "private": true,
   "nyc": {

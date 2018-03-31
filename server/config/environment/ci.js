@@ -4,12 +4,13 @@
 // ===========================
 module.exports = {
   // MongoDB connection options
+  //  TODO change this to the new service in the OpenShift namespace
   mongo: {
-    uri: 'mongodb://mongo.server/todolist-ci'
+    uri: 'mongodb://localhost/todolist-ci'
   },
   mocks: {
-    api: true
+    // api: true
+    api: false
   },
-  seedDB: true,
-  port: process.env.PORT || 9001
+  seedDB: true
 };
