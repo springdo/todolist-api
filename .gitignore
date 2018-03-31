@@ -11,3 +11,5 @@ reports
 coverage
 .nyc_output
 test-results.xml
+package-contents
+package-contents.zip
