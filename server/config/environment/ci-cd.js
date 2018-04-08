@@ -6,7 +6,7 @@ module.exports = {
   // MongoDB connection options
   //  TODO change this to the new service in the OpenShift namespace
   mongo: {
-    uri: 'mongodb://username:password@<YOUR_NAME>-ci-cd.apps.<CLUSTER_DOMAIN>/todolist',
+    uri: 'mongodb://username:password@mongodb.<YOUR_NAME>-ci-cd.svc.cluster.local/todolist',
   },
   mocks: {
     // api: true
