@@ -5,8 +5,7 @@ const mongoose = require('mongoose'),
 
 const TodoSchema = new Schema({
   title: String,
-  completed: Boolean,
-  important: Boolean
+  completed: Boolean
 });
 
 module.exports = mongoose.model('Todo', TodoSchema);
