@@ -189,4 +189,24 @@ describe("PUT /api/todos/:id", function() {
         done();
       });
   });
+
+
+
+  // Exercise 3 test case!
+  it("should ....", function(done) {
+    request(app)
+      .put("/api/todos/" + todoId)
+      .send({ title: "LOVE endpoint/server side testing!", completed: true })
+      .expect(200)
+      .expect("Content-Type", /json/)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.have.property("_id");
+        res.body.title.should.equal("LOVE endpoint/server side testing!");
+        // YOUR TEST GO HERE
+        
+        done();
+      });
+  });
+
 });
