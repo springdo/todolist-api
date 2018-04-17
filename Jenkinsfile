@@ -114,6 +114,9 @@ pipeline {
                     label "master"  
                 }
             }
+            when {
+                expression { BRANCH_NAME ==~ /(master|develop)/ }
+            }
             steps {
                 echo '### Get Binary from Nexus ###'
                 sh  '''
@@ -140,6 +143,9 @@ pipeline {
                 node {
                     label "master"  
                 }
+            }
+            when {
+                expression { BRANCH_NAME ==~ /(master|develop)/ }
             }
             steps {
                 echo '### tag image for namespace ###'
