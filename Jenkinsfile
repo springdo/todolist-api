@@ -34,13 +34,15 @@ pipeline {
                     label "master"
                 }
             }
-            when { branch 'master' }
+            when {
+              expression { GIT_BRANCH ==~ /(.*master)/ }
+            }
             steps {
                 script {
                     // Arbitrary Groovy Script executions can do in script tags
                     env.PROJECT_NAMESPACE = "<YOUR_NAME>-test"
                     env.NODE_ENV = "test"
-                    env.E2E_TEST_ROUTE = "oc get route/${APP_NAME} --template='{{.spec.host}}' -n ${PROJECT_NAMESPACE}".execute().text
+                    env.E2E_TEST_ROUTE = "oc get route/${APP_NAME} --template='{{.spec.host}}' -n ${PROJECT_NAMESPACE}".execute().text.minus("'").minus("'")
                 }
             }
         }
@@ -50,13 +52,15 @@ pipeline {
                     label "master"
                 }
             }
-            when { branch 'develop' }
+            when {
+              expression { GIT_BRANCH ==~ /(.*develop)/ }
+            }
             steps {
                 script {
                     // Arbitrary Groovy Script executions can do in script tags
                     env.PROJECT_NAMESPACE = "<YOUR_NAME>-dev"
                     env.NODE_ENV = "dev"
-                    env.E2E_TEST_ROUTE = "oc get route/${APP_NAME} --template='{{.spec.host}}' -n ${PROJECT_NAMESPACE}".execute().text
+                    env.E2E_TEST_ROUTE = "oc get route/${APP_NAME} --template='{{.spec.host}}' -n ${PROJECT_NAMESPACE}".execute().text.minus("'").minus("'")
                 }
             }
         }
@@ -73,18 +77,18 @@ pipeline {
                 sh 'printenv'
 
                 echo '### Install deps ###'
-                sh 'scl enable rh-nodejs8 \'npm install\''
+                sh 'npm install'
 
                 echo '### Running tests ###'
-                sh 'scl enable rh-nodejs8 \'npm run test:ci\''
+                sh 'npm run test:ci'
 
                 echo '### Running build ###'
-                sh 'scl enable rh-nodejs8 \'npm run build:ci\''
+                sh 'npm run build:ci'
 
 
                 echo '### Packaging App for Nexus ###'
-                sh 'scl enable rh-nodejs8 \'npm run package\''
-                sh 'scl enable rh-nodejs8 \'npm run publish\''
+                sh 'npm run package'
+                sh 'npm run publish'
             }
             // Post can be used both on individual stages and for the entire build.
             post {
@@ -115,7 +119,7 @@ pipeline {
                 }
             }
             when {
-                expression { BRANCH_NAME ==~ /(master|develop)/ }
+                expression { GIT_BRANCH ==~ /(.*master|.*develop)/ }
             }
             steps {
                 echo '### Get Binary from Nexus ###'
@@ -145,7 +149,7 @@ pipeline {
                 }
             }
             when {
-                expression { BRANCH_NAME ==~ /(master|develop)/ }
+                expression { GIT_BRANCH ==~ /(.*master|.*develop)/ }
             }
             steps {
                 echo '### tag image for namespace ###'
