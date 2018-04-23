@@ -70,6 +70,8 @@
     "clean": "rm -rf reports package-contents*",
     "build:ci": "mkdir -p package-contents && cp -vr server Dockerfile package.json package-contents",
     "package": "zip -r package-contents.zip package-contents",
+    "perf-test:create": "./node_modules/.bin/grunt perf-test:dev:create",
+    "perf-test:show": "./node_modules/.bin/grunt perf-test:dev:show",
     "test": "node_modules/.bin/nyc node_modules/.bin/mocha 'server/**/*.spec.js' --exit",
     "test:ci": "export MOCHA_FILE='reports/server/mocha/test-results.xml' && export NODE_ENV=ci && node_modules/.bin/nyc node_modules/.bin/mocha 'server/**/*.spec.js' -R mocha-junit-reporter --exit",
     "mongo": "docker run -i -d --name mongo-local -p 27017:27017 mongo",

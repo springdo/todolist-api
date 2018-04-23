@@ -20,8 +20,8 @@ const test = {
   route : '/api/todos/',
   nfr : 60
 };
-const si = {
-  domain : 'http://localhost:9002',
+const dev = {
+  domain : 'http://' + process.env.E2E_TEST_ROUTE,
   dir : './reports/server/perf/',
   route : '/api/todos/',
   nfr : 60
@@ -70,7 +70,7 @@ module.exports = function () {
         filename: 'create',
         env: {},
         main: [{
-          post: si.domain + si.route,
+          post: dev.domain + dev.route,
           json: {
             title: 'Run perf-test',
             completed: false
@@ -82,13 +82,13 @@ module.exports = function () {
         filename: 'show',
         env: {},
         main: [{
-          get: si.domain + si.route
+          get: dev.domain + dev.route
         }]
       };
 
-      if (target === 'si') {
-        show.env = si;
-        create.env = si;
+      if (target === 'dev') {
+        show.env = dev;
+        create.env = dev;
       }
       else if (target === 'production') {
         show.env = production;
@@ -118,7 +118,7 @@ module.exports = function () {
           }
           else {
             const mongoid = JSON.parse(body)[0]._id;
-            show.main[0].get = si.domain + si.route + mongoid;
+            show.main[0].get = dev.domain + dev.route + mongoid;
             all_tests.push(test_endpoint(show, options));
           }
 
