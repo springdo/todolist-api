@@ -25,9 +25,9 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
-  if ('production' === env  || 'si' === env  || 'ci' === env) {
-    app.use(express.static(path.join(config.root, 'public')));
-    app.set('appPath', path.join(config.root, 'public'));
+  if ('production' === env  || 'dev' === env  || 'test' === env) {
+    // app.use(express.static(path.join(config.root, 'public')));
+    // app.set('appPath', path.join(config.root, 'public'));
     app.use(morgan('dev'));
   }
 
